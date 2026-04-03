@@ -1,5 +1,11 @@
 import pool from '../config/db.js'
 
+export const fetchAllUrls = async ()=> {
+  const result = await pool.query(
+    `SELECT * FROM urls ORDER BY created_at DESC`
+  )
+  return result.rows
+}
 export const getURLbyShortURL = async (short_url) => {
   const result = await pool.query(
     'SELECT * FROM urls WHERE short_url=$1',

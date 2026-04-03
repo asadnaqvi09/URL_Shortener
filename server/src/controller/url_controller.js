@@ -1,4 +1,4 @@
-import { getURLbyShortURL, createUrlModel, deteleURLModel } from '../models/url_model.js'
+import { getURLbyShortURL, createUrlModel, deteleURLModel, fetchAllUrls } from '../models/url_model.js'
 import { logClick } from '../models/click_model.js'
 import { generateShortCode } from '../utils/generateShortUrl.js'
 import * as UAParser from 'ua-parser-js'
@@ -6,6 +6,22 @@ import redis from '../config/redis.js'
 import QrCode from 'qrcode'
 import pool from '../config/db.js'
 
+export const getAllURLController = async (req,res)=> {
+  try {
+    const fetchUrls = await fetchAllUrls();
+    return res.status(200).json({
+      success: true,
+      message: 'All Urls Fetched Successfully',
+      data: fetchUrls
+    })
+  } catch (error) {
+    console.error('Error in getAllURLController : ', error)
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong while fetching all URLs'
+    })
+  }
+}
 export const createURLController = async (req,res)=>{
   try{
     const { original_url } = req.body

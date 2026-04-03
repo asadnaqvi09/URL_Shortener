@@ -4,6 +4,7 @@ import { urlLimiter } from '../middlewares/rateLimiter.js'
 
 const router = express.Router()
 
+router.get('/url', urlLimiter , urlController.getAllURLController)
 router.post('/url', urlLimiter, urlController.createURLController)
 router.get('/url/:short_url', urlLimiter, urlController.getURLController)
 router.get('/:short_url', urlController.redirectController)
