@@ -64,9 +64,6 @@ export const redirectController = async (req,res)=>{
       if(!urlData) return res.status(404).json({ success:false,message:'Short URL not found' })
       await redis.set(`url:${short_url}`,JSON.stringify(urlData),'EX',3600)
     }
-    if(urlData.expiry_date && new Date(urlData.expiry_date)<new Date()){
-      return res.status(410).json({ success:false,message:'Link expired' })
-    }
     const ua=new UAParser.UAParser(req.headers['user-agent']).getResult()
     await logClick({
       url_id:urlData.id,
@@ -102,35 +99,6 @@ export const getQRCodeController = async (req,res)=> {
     return res.status(500).json({
       success: false,
       message: 'Something went wrong while generating QR code'
-    })
-  }
-}
-
-export const checkExpiryController = async (req,res)=> {
-  try {
-    const { short_url } = req.params
-    const url = await getURLbyShortURL(short_url)
-    if (!url) {
-      return res.status(404).json({
-        success: false,
-        message: 'Short URL Not Found !'
-      })
-    }
-    if (url.expiry_date && new Date(url.expiry_date) < new Date()) {
-      return res.status(410).json({
-        success: false,
-        message: 'Short URL has expired'
-      })
-    }
-    return res.status(200).json({
-      success: true,
-      message: 'Short URL is valid'
-    })
-  } catch (error) {
-    console.error('Error in checkExpiryController : ', error)
-    return res.status(500).json({
-      success: false,
-      message: 'Something went wrong while checking URL expiry'
     })
   }
 }

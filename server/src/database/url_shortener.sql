@@ -3,7 +3,6 @@ CREATE TABLE urls (
   original_url TEXT NOT NULL,
   short_url VARCHAR(10) UNIQUE NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  expiry_date TIMESTAMP,
   qr_code TEXT
 );
 

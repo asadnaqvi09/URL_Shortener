@@ -9,7 +9,6 @@ router.post('/url', urlLimiter, urlController.createURLController)
 router.get('/url/:short_url', urlLimiter, urlController.getURLController)
 router.get('/:short_url', urlController.redirectController)
 router.delete('/url/:short_url' , urlLimiter, urlController.deleteURLController)
-router.get('/url/:short_url/expiry', urlLimiter, urlController.checkExpiryController)
 router.get('/url/:short_url/qr', urlLimiter, urlController.getQRCodeController)
 
 export default router

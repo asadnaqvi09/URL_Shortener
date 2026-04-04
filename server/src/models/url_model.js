@@ -14,10 +14,10 @@ export const getURLbyShortURL = async (short_url) => {
   return result.rows[0]
 }
 
-export const createUrlModel = async ({ original_url, short_url, expiry_date = null, qr_code = null }) => {
+export const createUrlModel = async ({ original_url, short_url, qr_code = null }) => {
   const result = await pool.query(
-    'INSERT INTO urls (original_url, short_url, expiry_date, qr_code) VALUES ($1,$2,$3,$4) RETURNING *',
-    [original_url, short_url, expiry_date, qr_code]
+    'INSERT INTO urls (original_url, short_url, qr_code) VALUES ($1,$2,$3) RETURNING *',
+    [original_url, short_url, qr_code]
   )
   return result.rows[0]
 }
