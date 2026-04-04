@@ -39,14 +39,18 @@ export const getRecentClicks=async(short_url)=>{
   return result.rows
 }
 
-export const getDailyClicks=async(short_url)=>{
-  const result=await pool.query(`
-    SELECT DATE(c.clicked_at) AS date,COUNT(*) AS clicks
+// Suggested tweak for getDailyClicks
+export const getDailyClicks = async (short_url) => {
+  const result = await pool.query(`
+    SELECT 
+      TO_CHAR(c.clicked_at, 'YYYY-MM-DD') AS date, 
+      COUNT(*) AS clicks
     FROM clicks c
-    JOIN urls u ON u.id=c.url_id
-    WHERE u.short_url=$1
-    GROUP BY DATE(c.clicked_at)
+    JOIN urls u ON u.id = c.url_id
+    WHERE u.short_url = $1
+    GROUP BY date
     ORDER BY date ASC
-  `,[short_url])
-  return result.rows
+    LIMIT 7; -- Typically you only want the last 7 days for a chart
+  `, [short_url]);
+  return result.rows;
 }

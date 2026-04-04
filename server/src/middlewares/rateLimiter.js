@@ -10,3 +10,15 @@ export const urlLimiter = rateLimit({
         message : "Too many requests.Please try again later"
     }
 });
+
+export const redirectLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (req, res) => {
+        res.status(429).render('404', { 
+            message: "You're clicking too fast! Please slow down." 
+        });
+    }
+});
