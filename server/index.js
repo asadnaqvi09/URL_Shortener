@@ -31,9 +31,9 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'client')))
 
 // Routes
-app.use('/api/v1/redirect' , redirectRoutes)
 app.use('/api/v1/' , urlRoutes)
 app.use('/api/v1/analytics' , analyticsRoutes)
+app.use('/' , redirectRoutes)
 // Frotnend Route
 app.get('/', (req, res) => {
     res.render('index')
