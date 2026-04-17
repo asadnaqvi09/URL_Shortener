@@ -52,32 +52,6 @@ export const getURLController = async (req,res)=>{
   }
 }
 
-export const redirectController = async (req,res)=>{
-  try{
-    const { short_url } = req.params
-    let cached=await redis.get(`url:${short_url}`)
-    let urlData
-    if(cached){
-      urlData=JSON.parse(cached)
-    }else{
-      urlData=await getURLbyShortURL(short_url)
-      if(!urlData) return res.status(404).json({ success:false,message:'Short URL not found' })
-      await redis.set(`url:${short_url}`,JSON.stringify(urlData),'EX',3600)
-    }
-    const ua=new UAParser.UAParser(req.headers['user-agent']).getResult()
-    await logClick({
-      url_id:urlData.id,
-      ip_address:req.ip,
-      device:ua.device.type||'desktop',
-      user_agent:req.headers['user-agent']
-    })
-    return res.redirect(urlData.original_url)
-  }catch(error){
-    console.error(error)
-    return res.status(500).json({ success:false,message:'Internal server error' })
-  }
-}
-
 export const getQRCodeController = async (req,res)=> {
   try {
     const {short_url} = req.params
