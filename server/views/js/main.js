@@ -1,4 +1,3 @@
-// client/js/main.js
 import { renderShortener } from './pages/shortner.js';
 import { renderAnalytics } from './pages/analytics.js';
 
